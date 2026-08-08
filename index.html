@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOLT SHOP | E-Moto Mods</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #080808;
+      color: white;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,8,8,0.95);
+      border-bottom: 1px solid #222;
+      padding: 18px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    .logo span {
+      color: #00ff66;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 25px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #00ff66;
+    }
+
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      padding: 70px 7%;
+      background:
+        radial-gradient(circle at 80% 40%, rgba(0,255,102,0.15), transparent 35%),
+        #080808;
+    }
+
+    .hero-content {
+      max-width: 700px;
+    }
+
+    .hero h1 {
+      font-size: clamp(55px, 9vw, 110px);
+      line-height: 0.9;
+      font-weight: 900;
+      letter-spacing: -5px;
+    }
+
+    .hero h1 span {
+      color: #00ff66;
+    }
+
+    .hero p {
+      margin: 30px 0;
+      color: #aaa;
+      font-size: 20px;
+      line-height: 1.5;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #00ff66;
+      color: #000;
+      padding: 16px 28px;
+      text-decoration: none;
+      font-weight: 900;
+      border-radius: 6px;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,255,102,0.2);
+    }
+
+    section {
+      padding: 80px 7%;
+    }
+
+    .section-title {
+      font-size: 42px;
+      margin-bottom: 40px;
+    }
+
+    .section-title span {
+      color: #00ff66;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 22px;
+    }
+
+    .product {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: 0.2s;
+    }
+
+    .product:hover {
+      transform: translateY(-5px);
+      border-color: #00ff66;
+    }
+
+    .product-image {
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        linear-gradient(135deg, #151515, #0b0b0b);
+      font-size: 70px;
+    }
+
+    .product-info {
+      padding: 20px;
+    }
+
+    .product h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .product p {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .price {
+      font-size: 22px;
+      font-weight: 900;
+      color: #00ff66;
+      margin-bottom: 15px;
+    }
+
+    .buy {
+      width: 100%;
+      border: none;
+      cursor: pointer;
+      padding: 12px;
+      background: white;
+      color: black;
+      font-weight: 900;
+      border-radius: 5px;
+    }
+
+    .buy:hover {
+      background: #00ff66;
+    }
+
+    .about {
+      background: #0d0d0d;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .box {
+      background: #111;
+      padding: 30px;
+      border-radius: 10px;
+      border: 1px solid #222;
+    }
+
+    .box h3 {
+      margin-bottom: 12px;
+      color: #00ff66;
+    }
+
+    .box p {
+      color: #999;
+      line-height: 1.6;
+    }
+
+    .contact {
+      text-align: center;
+    }
+
+    .contact p {
+      color: #999;
+      margin: 15px 0 25px;
+    }
+
+    footer {
+      border-top: 1px solid #222;
+      padding: 30px 7%;
+      text-align: center;
+      color: #666;
+    }
+
+    /* Koszyk */
+
+    .cart {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 200;
+      background: #00ff66;
+      color: black;
+      border: none;
+      padding: 16px 22px;
+      border-radius: 50px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+    }
+
+    .cart-window {
+      display: none;
+      position: fixed;
+      right: 20px;
+      bottom: 80px;
+      z-index: 199;
+      width: 340px;
+      max-width: calc(100% - 40px);
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.7);
+    }
+
+    .cart-window h2 {
+      margin-bottom: 20px;
+    }
+
+    .cart-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #222;
+      color: #ccc;
+    }
+
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+
+    .checkout {
+      width: 100%;
+      padding: 13px;
+      background: #00ff66;
+      border: none;
+      font-weight: 900;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    @media(max-width: 700px) {
+      nav {
+        display: none;
+      }
+
+      header {
+        padding: 16px 5%;
+      }
+
+      section {
+        padding: 60px 5%;
+      }
+
+      .hero {
+        padding: 60px 5%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">⚡ VOLT<span>SHOP</span></div>
+
+  <nav>
+    <a href="#produkty">Produkty</a>
+    <a href="#onas">O nas</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+</header>
+
+
+<section class="hero">
+  <div class="hero-content">
+
+    <h1>
+      VOLT<br>
+      <span>SHOP</span> ⚡
+    </h1>
+
+    <p>
+      Gadżety, akcesoria i mody dla fanów e-moto.
+      Zbuduj swój własny setup i wyróżnij się na ulicy.
+    </p>
+
+    <a href="#produkty" class="btn">
+      ZOBACZ PRODUKTY
+    </a>
+
+  </div>
+</section>
+
+
+<section id="produkty">
+
+  <h2 class="section-title">
+    NASZE <span>PRODUKTY</span>
+  </h2>
+
+  <div class="products">
+
+    <div class="product">
+      <div class="product-image">⚡</div>
+
+      <div class="product-info">
+        <h3>VOLT Keychain</h3>
+        <p>Stylowy brelok VOLT SHOP.</p>
+        <div class="price">24,99 zł</div>
+        <button class="buy" onclick="addToCart('VOLT Keychain', 24.99)">
+          DODAJ DO KOSZYKA
+        </button>
+      </div>
+    </div>
+
+
+    <div class="product">
+      <div class="product-image">🏍️</div>
+
+      <div class="product-info">
+        <h3>VOLT Stickers</h3>
+        <p>Zestaw naklejek do personalizacji.</p>
+        <div class="price">29,99 zł</div>
+        <button class="buy" onclick="addToCart('VOLT Stickers', 29.99)">
+          DODAJ DO KOSZYKA
+        </button>
+      </div>
+    </div>
+
+
+    <div class="product">
+      <div class="product-image">🔧</div>
+
+      <div class="product-info">
+        <h3>ODI Grips</h3>
+        <p>Gripy do e-moto — różne warianty.</p>
+        <div class="price">99,99 zł</div>
+        <button class="buy" onclick="addToCart('ODI Grips', 99.99)">
+          DODAJ DO KOSZYKA
+        </button>
+      </div>
+    </div>
+
+
+    <div class="product">
+      <div class="product-image">📱</div>
+
+      <div class="product-info">
+        <h3>Phone Mount</h3>
+        <p>Uchwyt na telefon do e-moto.</p>
+        <div class="price">79,99 zł</div>
+        <button class="buy" onclick="addToCart('Phone Mount', 79.99)">
+          DODAJ DO KOSZYKA
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="about" id="onas">
+
+  <h2 class="section-title">
+    DLACZEGO <span>VOLT?</span>
+  </h2>
+
+  <div class="about-grid">
+
+    <div class="box">
+      <h3>⚡ E-MOTO</h3>
+      <p>
+        Sklep skierowany do osób, które chcą
+        wyróżnić swój elektryczny sprzęt.
+      </p>
+    </div>
+
+    <div class="box">
+      <h3>🔥 WŁASNY STYL</h3>
+      <p>
+        Akcesoria i gadżety pozwalające
+        stworzyć własny setup.
+      </p>
+    </div>
+
+    <div class="box">
+      <h3>🏁 RIDER COMMUNITY</h3>
+      <p>
+        VOLT SHOP tworzymy dla ludzi,
+        którzy kochają jazdę i modyfikacje.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="contact" id="kontakt">
+
+  <h2 class="section-title">
+    MASZ <span>PYTANIE?</span>
+  </h2>
+
+  <p>
+    Napisz do nas na Instagramie lub TikToku.
+  </p>
+
+  <a class="btn" href="#">
+    @VOLTSHOP
+  </a>
+
+</section>
+
+
+<footer>
+  © 2026 VOLT SHOP ⚡
+</footer>
+
+
+<button class="cart" onclick="toggleCart()">
+  🛒 Koszyk (<span id="cartCount">0</span>)
+</button>
+
+
+<div class="cart-window" id="cartWindow">
+
+  <h2>Twój koszyk</h2>
+
+  <div id="cartItems">
+    Koszyk jest pusty.
+  </div>
+
+  <div class="total">
+    Razem: <span id="cartTotal">0.00</span> zł
+  </div>
+
+  <button class="checkout" onclick="checkout()">
+    ZAMÓWIENIE
+  </button>
+
+</div>
+
+
+<script>
+
+  let cart = [];
+
+  function addToCart(name, price) {
+
+    cart.push({
+      name: name,
+      price: price
+    });
+
+    updateCart();
+
+    alert(name + " dodano do koszyka!");
+  }
+
+
+  function updateCart() {
+
+    document.getElementById("cartCount").innerText = cart.length;
+
+    let items = document.getElementById("cartItems");
+
+    if(cart.length === 0) {
+      items.innerHTML = "Koszyk jest pusty.";
+      document.getElementById("cartTotal").innerText = "0.00";
+      return;
+    }
+
+    let total = 0;
+
+    items.innerHTML = "";
+
+    cart.forEach(function(item) {
+
+      total += item.price;
+
+      items.innerHTML += `
+        <div class="cart-item">
+          ${item.name} — ${item.price.toFixed(2)} zł
+        </div>
+      `;
+
+    });
+
+    document.getElementById("cartTotal").innerText =
+      total.toFixed(2);
+  }
+
+
+  function toggleCart() {
+
+    let window = document.getElementById("cartWindow");
+
+    if(window.style.display === "block") {
+      window.style.display = "none";
+    } else {
+      window.style.display = "block";
+    }
+
+  }
+
+
+  function checkout() {
+
+    if(cart.length === 0) {
+      alert("Koszyk jest pusty.");
+      return;
+    }
+
+    alert(
+      "To jest wersja demonstracyjna sklepu. " +
+      "Płatności i zamówienia trzeba jeszcze podłączyć."
+    );
+
+  }
+
+</script>
+
+</body>
+</html>
